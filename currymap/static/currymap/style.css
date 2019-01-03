@@ -1,0 +1,13 @@
+#mapview { 
+    height: 600px;
+}
+.container {
+    width: 90%;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+}

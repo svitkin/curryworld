@@ -1,0 +1,55 @@
+{% load leaflet_tags %}
+{% load static %}
+
+<html>
+    <head>
+        {% leaflet_js %}
+        {% leaflet_css %}
+        <script src="{% static 'currymap/leaflet-providers.js' %}"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'currymap/style.css' %}"
+    </head>
+
+    <body>
+        <nav class="navbar navbar-light navbar-expand-lg" style="background-color: #e3f2fd;">
+            <a class="navbar-brand" href="#">Curry World</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <a class="nav-item nav-link" href="#">Introduction</a>
+                <a class="nav-item nav-link active" href="#">Map</a>
+                <a class="nav-item nav-link" href="#">Learn More</a>
+              </div>
+            </div>
+        </nav>
+        <div class='container'>
+            {% leaflet_map "mapview" callback="map_init" %}
+        </div>
+
+        <script type="text/javascript">
+            function map_init(map, options) {
+                // get point lat and lon
+                var lat = "{{ historical_points.geometry.x }}";
+                var lon = "{{ historical_points.geometry.y }}";
+
+                var img_path = "{% static 'currymap/images/'%}" + "{{ historical_points.picture }}";
+                var title = "{{ historical_points.title }}";
+                var description = "{{ historical_points.description }}";
+
+                var popup = L.popup({ maxWidth: 750 })
+                    .setContent(`<h1>${title}</h1><img src=${img_path} alt=${title} width=150><br>${description}`);
+
+                // zoom to point & add it to map
+                map.setView([lat, lon], 6);
+                L.marker([lat, lon])
+                    .addTo(map)
+                    .bindPopup(popup);
+                
+                L.tileLayer.provider('Stamen.Terrain').addTo(map);
+            }
+        </script>
+    </body>
+</html>
