@@ -1,8 +1,10 @@
+# Create your models here.
 from django.db import models
 from django.contrib.gis.db import models as geo_models
 
 class HistoryMarker(models.Model):
 
+    hmarker_id = models.IntegerField(primary_key = True)
     title = models.CharField(max_length=256)
     description = models.TextField()
     date_float = models.FloatField(null = True)

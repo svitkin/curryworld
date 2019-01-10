@@ -19,5 +19,5 @@ from django.contrib import admin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('currymap/', include('currymap.urls')),
+    path('apps/api/', include('apps.api.urls')),
 ]
