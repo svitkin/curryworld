@@ -18,3 +18,8 @@ class HistoryMarker(models.Model):
     @property
     def picture_url(self):
         return self.picture.url
+
+
+# TODO: Change historymarker model; add resources, videos, recipes, and more (make sure model still makes sense)
+# TODO: Add years model? Mainly for frontend purposes... not sure how much backend logic there is
+# TODO: Add lines model? Can this be calculated in postgis or leaflet? Would be useful for trade routes and connections between countries

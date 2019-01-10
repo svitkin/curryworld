@@ -16,8 +16,9 @@ Including another URLconf
 from django.urls import path, include
 from django.contrib import admin
 
-
+# TODO: Make frontend links just the default (no preamble apps/frontend/)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('apps/api/', include('apps.api.urls')),
+    path('apps/frontend/', include('apps.frontend.urls')),
 ]
