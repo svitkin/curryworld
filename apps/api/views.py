@@ -4,24 +4,23 @@ from django.shortcuts import get_object_or_404, render
 
 from .models import HistoryMarker
 from .serializers import HistoryMarkerSerializer
+import sys
+import logging
 
-from rest_framework.renderers import JSONRenderer
+logger = logging.getLogger(__name__)
 
 class ListMap(generics.ListCreateAPIView):
     queryset = HistoryMarker.objects.all()
     serializer_class = HistoryMarkerSerializer
-    renderer_classes = (JSONRenderer, )
 
 
-class DetailMap(generics.RetrieveUpdateDestroyAPIView):
-    queryset = HistoryMarker.objects.all()
-    renderer_classes = (JSONRenderer, )
-
-    def get_object(self):
-        queryset = self.filter_queryset(self.get_queryset())
-        # make sure to catch 404's below
-        obj = queryset.get(hmarker_id=self.kwargs['pk'])
-        self.check_object_permissions(self.request, obj)
-        return obj
-
+class YearMap(generics.ListAPIView):
     serializer_class = HistoryMarkerSerializer
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned history markers to a given year,
+        by filtering against a `year` query parameter in the URL.
+        """
+        queryset = HistoryMarker.objects.filter(year_int=self.kwargs['year'])
+        return queryset
