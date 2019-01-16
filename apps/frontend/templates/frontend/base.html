@@ -1,44 +1,12 @@
-{% load leaflet_tags %}
 {% load static %}
 
 <!-- TODO: FIGURE OUT WAY TO INCLUDE NAVBAR AND OTHER STUFF WITHOUT LEAFLET LOADING ON EVERY PAGE -->
 
 <html>
     <head>
-        {% leaflet_js %}
-        {% leaflet_css %}
-        <script src="{% static 'frontend/leaflet-providers.js' %}"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
-        <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet'/>
         <link rel="stylesheet" type="text/css" href="{% static 'frontend/style.css' %}">
-        <script type="text/javascript">
-            window.addEventListener("map:init", function (event) {
-                var map = event.detail.map;
-                L.tileLayer.provider('Stamen.Terrain').addTo(map);   
-                map.addControl(new L.Control.Fullscreen());
-
-                var dataurl = "http://127.0.0.1:8000/apps/api/1";
-                fetch(dataurl)
-                    .then(function(resp) {
-                        return resp.json();
-                    })
-                    .then(function(data) {
-                        //map.setView(data.features[0].geometry.coordinates), 6);
-                        map.setView([data.geometry.coordinates[1], data.geometry.coordinates[0]], 6);
-                        L.geoJson(data, {
-                            onEachFeature: function onEachFeature(feature, layer) {
-                                var props = feature.properties;
-                                var image_path = "{% static 'frontend/images/'%}" + props.picture.split(/[\\/]/).pop();
-                                var content = `<h1>${props.title}</h1><img src=${image_path} alt=${props.title} width=150><br>${props.description}`;
-                                var popup = L.popup({ maxWidth: "750" }).setContent(content)
-                                layer.bindPopup(popup);
-                            }
-                        }).addTo(map);
-                    });
-            });
-        </script>
     </head>
 
     <header>
