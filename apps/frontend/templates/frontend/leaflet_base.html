@@ -1,0 +1,86 @@
+{% load leaflet_tags %}
+{% load static %}
+
+<!-- TODO: FIGURE OUT WAY TO INCLUDE NAVBAR AND OTHER STUFF WITHOUT LEAFLET LOADING ON EVERY PAGE -->
+
+<html>
+    <head>
+        {% leaflet_js %}
+        {% leaflet_css %}
+        <script src="{% static 'frontend/leaflet-providers.js' %}"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+        <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet'/>
+        <link rel="stylesheet" type="text/css" href="{% static 'frontend/style.css' %}">
+
+        <script type="text/javascript">
+            window.addEventListener("map:init", function (event) {
+                var map = event.detail.map;
+                L.tileLayer.provider('Stamen.Terrain').addTo(map);   
+                map.addControl(new L.Control.Fullscreen());
+
+                var dataurl = "http://127.0.0.1:8000/apps/api/-2000/";
+                fetch(dataurl)
+                    .then(function(resp) {
+                        return resp.json();
+                    })
+                    .then(function(data) {
+                        
+                        map.setView([data.features[0].geometry.coordinates[1], data.features[0].geometry.coordinates[0]], 6);
+                       
+                        L.geoJson(data, {
+                            onEachFeature: function onEachFeature(feature, layer) {
+                                var props = feature.properties;
+                                var image_path = "{% static 'frontend/images/'%}" + props.picture.split(/[\\/]/).pop();
+                                var source_links = props.sources.map(function(source) { 
+                                                                        return `<a href=${source} target="blank">${source}</a><br>` 
+                                                                    });
+                                
+                                var content = `<h1>${props.title}</h1>
+                                                <img src=${image_path} alt=${props.title} width=150>
+                                                <br>${props.main_text}
+                                                <br><br>Sources:<br>
+                                                ${source_links}`;
+
+                                var popup = L.popup({ maxWidth: "750" }).setContent(content)
+                                
+                                layer.bindPopup(popup);
+                            }
+                        }).addTo(map);
+                    });
+            });
+        </script>
+    </head>
+
+    <header>
+        <nav class="navbar navbar-light navbar-expand-lg" style="background-color: #e3f2fd;">
+            <a class="navbar-brand" href="{% url 'frontend:intro' %}">Curry World</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="{% url 'frontend:intro' %}">Introduction</a>
+                    <a class="nav-item nav-link" href="{% url 'frontend:historytest' %}">Map</a>
+                    <a class="nav-item nav-link" href="{% url 'frontend:learnmore' %}">Learn More</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+        <p>Created by 1819Lamont Studios</p>
+        <div id="sitemaps">
+            <h8>Sitemap</h8>
+            <ul>
+                <li><a href="{% url 'frontend:intro' %}">Introduction</a></li>
+                <li><a href="{% url 'frontend:historytest' %}">Map</a></li>
+                <li><a href="{% url 'frontend:learnmore' %}">Learn More</a></li>
+            </ul>
+        </div>
+    </footer>
+</html>
