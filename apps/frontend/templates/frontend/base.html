@@ -4,11 +4,14 @@
 
 <html>
     <head>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <link rel="stylesheet" type="text/css" href="{% static 'frontend/style.css' %}">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
     </head>
 
+    <div class='bootstrap'>
     <header>
         <nav class="navbar navbar-light navbar-expand-lg" style="background-color: #e3f2fd;">
             <a class="navbar-brand" href="{% url 'frontend:intro' %}">Curry World</a>
@@ -18,25 +21,30 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" href="{% url 'frontend:intro' %}">Introduction</a>
-                    <a class="nav-item nav-link" href="{% url 'frontend:historytest' %}">Map</a>
+                    <a class="nav-item nav-link" href="{% url 'frontend:map' %}">Map</a>
                     <a class="nav-item nav-link" href="{% url 'frontend:learnmore' %}">Learn More</a>
                 </div>
             </div>
         </nav>
     </header>
+    </div>
 
+    
     {% block content %}
     {% endblock %}
+    
 
+    <div class='bootstrap'>
     <footer>
         <p>Created by 1819Lamont Studios</p>
         <div id="sitemaps">
             <h8>Sitemap</h8>
             <ul>
                 <li><a href="{% url 'frontend:intro' %}">Introduction</a></li>
-                <li><a href="{% url 'frontend:historytest' %}">Map</a></li>
+                <li><a href="{% url 'frontend:map' %}">Map</a></li>
                 <li><a href="{% url 'frontend:learnmore' %}">Learn More</a></li>
             </ul>
         </div>
     </footer>
+    </div>
 </html>
