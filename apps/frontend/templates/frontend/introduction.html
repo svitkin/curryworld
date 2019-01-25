@@ -3,20 +3,20 @@
 {% load static %}
 
 {% block content %}
-    <div class="bgimg-1">
-      <div class="caption">
-        <span class="border" style="background-color:transparent;font-size:50px;color: #f7f7f7;">WELCOME</span>
-      </div>
+  <div class="bgimg-1">
+    <div class="caption">
+      <span class="border" style="background-color:transparent;font-size:50px;color: #f7f7f7;">WELCOME</span>
     </div>
+  </div>
 
-    <div style="color: #777;background-color:white;text-align:center;padding:100px 80px;text-align: justify;">
-        <h3 style="text-align:center;">Introduction</h3>
-        <p style="padding-top:20px;font-size:20px;">Curry World is an interactive website that lets you learn and explore curry at your own pace. We suggest starting with the map but go with your gut! Dive deep into a rich world of history, culture, and taste.</p>
+  <div style="color: #777;background-color:white;text-align:center;padding:100px 80px;text-align: justify;">
+      <h3 style="text-align:center;">Introduction</h3>
+      <p style="padding-top:20px;font-size:20px;">Curry World is an interactive website that lets you learn and explore curry at your own pace. We suggest starting with the map but go with your gut! Dive deep into a rich world of history, culture, and taste.</p>
+  </div>
+  
+  <div class="bgimg-2">
+    <div class="caption">
+    <a style="color:white; text-decoration:none;" href="{% url 'frontend:map' %}"><span class="border">GET STARTED</span></a>
     </div>
-
-    <div class="bgimg-2">
-      <div class="caption">
-      <a style="color:white; text-decoration:none;" href="{% url 'frontend:map' %}"><span class="border">GET STARTED</span></a>
-      </div>
-    </div>
+  </div>
 {% endblock %}
