@@ -19,9 +19,6 @@
         <link rel="stylesheet" type="text/css" href="{% static 'frontend/style.css' %}">
         <script src="{% static 'frontend/leaflet-timeline.js' %}"></script>
         <script src="{% static 'frontend/leaflet-providers.js' %}"></script>
-        
-        <script src="https://unpkg.com/leaflet-responsive-popup@0.6.3/leaflet.responsive.popup.js"></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet-responsive-popup@0.6.3/leaflet.responsive.popup.css" />
 
         <script type="text/javascript">
             window.addEventListener("map:init", function (event) {
@@ -37,7 +34,7 @@
                     map.eachLayer(function (layer) {
                         map.removeLayer(layer);
                     });
-                    L.tileLayer.provider('Stamen.Terrain').addTo(map);
+                    L.tileLayer.provider('Esri.WorldTopoMap').addTo(map);
                     
                     var dataurl = "http://127.0.0.1:8000/apps/api/";
 
@@ -59,6 +56,18 @@
                             map.setView([data.features[0].geometry.coordinates[1], data.features[0].geometry.coordinates[0]], 6);
 
                             L.geoJson(data, {
+
+                                pointToLayer: function (feature, latlng) {
+                                    return L.circleMarker(latlng, {
+                                        radius: 20,
+                                        fillColor: "#ff7800",
+                                        color: "#000",
+                                        weight: 1,
+                                        opacity: 1,
+                                        fillOpacity: 0.8
+                                    });
+                                },
+                                
                                 onEachFeature: function onEachFeature(feature, layer) {
                                     var props = feature.properties;
                                     var image_path = "{% static 'frontend/images/'%}" + props.picture.split(/[\\/]/).pop();
@@ -72,7 +81,7 @@
                                                     <br><br>Sources:<br>
                                                     ${source_links}`;
 
-                                    var popup = L.responsivePopup({ maxWidth: "600" }).setContent(content);
+                                    var popup = L.popup({ maxWidth: "600" }).setContent(content);
 
                                     layer.bindPopup(popup);
                                 }
