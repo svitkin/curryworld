@@ -1,8 +1,5 @@
 {% load leaflet_tags %}
-{% load compile_static %}
 {% load static %}
-
-<!-- TODO: FIGURE OUT WAY TO INCLUDE NAVBAR AND OTHER STUFF WITHOUT LEAFLET LOADING ON EVERY PAGE -->
 
 <html>
     <head>
@@ -53,11 +50,11 @@
                         })
                         .then(function(data) {
 
-                            map.setView([data.features[0].geometry.coordinates[1], data.features[0].geometry.coordinates[0]], 6);
+                            map.setView([data.features[0].geometry.coordinates[1], data.features[0].geometry.coordinates[0]], 4);
 
                             L.geoJson(data, {
 
-                                pointToLayer: function (feature, latlng) {
+                                /*pointToLayer: function (feature, latlng) {
                                     return L.circleMarker(latlng, {
                                         radius: 20,
                                         fillColor: "#ff7800",
@@ -66,8 +63,8 @@
                                         opacity: 1,
                                         fillOpacity: 0.8
                                     });
-                                },
-                                
+                                },*/
+
                                 onEachFeature: function onEachFeature(feature, layer) {
                                     var props = feature.properties;
                                     var image_path = "{% static 'frontend/images/'%}" + props.picture.split(/[\\/]/).pop();
@@ -77,11 +74,11 @@
 
                                     var content = `<h1>${props.title}</h1>
                                                     <img src=${image_path} alt=${props.title} width=150>
-                                                    <br>${props.main_text}
+                                                    <br><p style="font-size: 17px;">${props.main_text}</p>
                                                     <br><br>Sources:<br>
                                                     ${source_links}`;
 
-                                    var popup = L.popup({ maxWidth: "600" }).setContent(content);
+                                    var popup = L.popup({ maxWidth: "600", autoPan: true }).setContent(content);
 
                                     layer.bindPopup(popup);
                                 }
@@ -95,7 +92,7 @@
         </script>
     </head>
 
-    <body style="padding-top: 70px">
+    <body>
         <nav class="navbar navbar-light navbar-expand-lg fixed-top" style="background-color: #e3f2fd;">
             <a class="navbar-brand" href="{% url 'frontend:intro' %}">Curry World</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">

@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
 
-    'static_precompiler',
     'corsheaders',
     'rest_framework',
     'rest_framework_gis',
@@ -151,15 +150,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/'
-
-STATIC_PRECOMPILER_COMPILERS = (
-    'static_precompiler.compilers.CoffeeScript',
-    'static_precompiler.compilers.Babel',
-    'static_precompiler.compilers.Handlebars',
-    'static_precompiler.compilers.SASS',
-    'static_precompiler.compilers.SCSS',
-    'static_precompiler.compilers.LESS',
-    'static_precompiler.compilers.Stylus',
-)
-

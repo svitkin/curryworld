@@ -1,9 +1,14 @@
-html, body {
+html {
   height: 100%;
 }
 
+body {
+  height: 100%;
+  padding-top: 55px;
+}
 
-.bgimg-1, .bgimg-2 {
+/* For parallax */
+#bootstrap-override .bgimg-1, .bgimg-2 {
   position: relative;
   opacity: 0.65;
   background-attachment: fixed;
@@ -12,17 +17,17 @@ html, body {
   background-size: cover;
 }
 
-.bgimg-1 {
+#bootstrap-override .bgimg-1 {
   background-image: url("/static/frontend/images/chicken-curry-intro-bg.jpg");
   min-height: 100%;
 }
 
-.bgimg-2 {
+#bootstrap-override .bgimg-2 {
   background-image: url("/static/frontend/images/curry-definition.png");
   min-height: 100%;
 }
 
-.caption {
+#bootstrap-override .caption {
   position: absolute;
   left: 0;
   top: 50%;
@@ -31,7 +36,7 @@ html, body {
   color: #000;
 }
 
-.caption span.border {
+#bootstrap-override .caption span.border {
   background-color: #111;
   color: #fff;
   padding: 18px;
@@ -39,18 +44,31 @@ html, body {
   letter-spacing: 10px;
 }
 
-
-.control_container {
-  padding: 15px 30px 15px 37px;
-  margin: 15px 30px 15px 37px;
-  opacity: 0.95;
-  background: #ffffff;
+#bootstrap-override .caption span.border:hover {
+  background-color: #808080;
 }
+
+#bootstrap-override h3 {
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  font: 20px "Lato", sans-serif;
+  color: #111;
+}
+
+/* For popup formatting */
 img {
   display: block;
   margin-left: auto;
   margin-right: auto;
   width: 40%;
+}
+
+/* For leaflet controller */
+.control_container {
+  padding: 15px 30px 15px 37px;
+  margin: 15px 30px 15px 37px;
+  opacity: 0.95;
+  background: #ffffff;
 }
 
 .range {
