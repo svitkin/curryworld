@@ -14,16 +14,15 @@
         <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet'/>
         
         <link rel="stylesheet" type="text/css" href="{% static 'frontend/style.css' %}">
-        <script src="{% static 'frontend/leaflet-timeline.js' %}"></script>
+        <script src="{% static 'frontend/leaflet-timeline-slider.min.js' %}"></script>
         <script src="{% static 'frontend/leaflet-providers.js' %}"></script>
 
         <script type="text/javascript">
             window.addEventListener("map:init", function (event) {
                 var map = event.detail.map;
                 map.addControl(new L.Control.Fullscreen());
-                
 
-                fetchAndAddHistory = function(label, map) {
+                fetchAndAddHistory = function({label, map}) {
                     console.log("Fetch and ad markers triggered");
                     console.log(label);
                     
@@ -43,28 +42,14 @@
 
                     year = isBC + label.match(/\d+/);
                     dataurl = dataurl + year + "/";
-
                     fetch(dataurl)
                         .then(function(resp) {
                             return resp.json();
                         })
                         .then(function(data) {
-
-                            map.setView([data.features[0].geometry.coordinates[1], data.features[0].geometry.coordinates[0]], 4);
+                            var markerArray = [];
 
                             L.geoJson(data, {
-
-                                /*pointToLayer: function (feature, latlng) {
-                                    return L.circleMarker(latlng, {
-                                        radius: 20,
-                                        fillColor: "#ff7800",
-                                        color: "#000",
-                                        weight: 1,
-                                        opacity: 1,
-                                        fillOpacity: 0.8
-                                    });
-                                },*/
-
                                 onEachFeature: function onEachFeature(feature, layer) {
                                     var props = feature.properties;
                                     var image_path = "{% static 'frontend/images/'%}" + props.picture.split(/[\\/]/).pop();
@@ -79,14 +64,25 @@
                                                     ${source_links}`;
 
                                     var popup = L.popup({ maxWidth: "600", autoPan: true }).setContent(content);
-
                                     layer.bindPopup(popup);
+                                    markerArray.push(layer);
                                 }
                             }).addTo(map);
+
+                            // Fit map to bounding box of current markers displayed
+                            var markerGroup = L.featureGroup(markerArray);
+                            map.fitBounds(markerGroup.getBounds()).setZoom(Math.min(16, markerArray.length*4));
                         });
                 }
 
-                L.control.timeline({ changeMap: fetchAndAddHistory }).addTo(map);
+                L.control.timelineSlider({
+                    timelineItems: ["2000 BC", "1776"],
+                    changeMap: fetchAndAddHistory,
+                    labelWidth: "125px",
+                    backgroundOpacity: 0.85,
+                    leftBgPadding: "32px",
+                    rightBgPadding: "5px"})
+                    .addTo(map);
                 
             });
         </script>
